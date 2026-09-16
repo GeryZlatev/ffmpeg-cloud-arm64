@@ -1,0 +1,64 @@
+{
+  "container": "alpine:3.22.1@sha256:4562b419adf48c5f3c763995d6014c123b3ce1d2e0ef2613b189779caa787192",
+  "platform": "linux/arm64",
+  "ffmpeg_signing_key_sha256": "397b3becedcd5a98769967ff1ff8501ddc89f8368b8f766e4701377d7dbaabe5",
+  "x264_commit": "b35605ace3ddf7c1a5d67a2eb553f034aef41d55",
+  "sources": [
+    {
+      "name": "ffmpeg",
+      "file": "ffmpeg.tar.xz",
+      "url": "https://ffmpeg.org/releases/ffmpeg-7.1.5.tar.xz",
+      "ref": "n7.1.5",
+      "sha256": "de668509caf9e35e3cd162473441fdb29538c6d96ed080292b3cf9e6fc5d558f"
+    },
+    {
+      "name": "ffmpeg-signature",
+      "file": "ffmpeg.tar.xz.asc",
+      "url": "https://ffmpeg.org/releases/ffmpeg-7.1.5.tar.xz.asc",
+      "ref": "n7.1.5",
+      "sha256": "7ce4b9d56e3ef0cd4c3a9c0b2c8a034ac91e6c4c011c1f10b05a8aa7292fca35"
+    },
+    {
+      "name": "zimg",
+      "file": "zimg.tar.gz",
+      "url": "https://codeload.github.com/sekrit-twc/zimg/tar.gz/f819b14e8f39d1282400b0d9543e8ef73c1b2bbd",
+      "ref": "release-3.0.6 / f819b14e8f39d1282400b0d9543e8ef73c1b2bbd",
+      "sha256": "4dc9faba466bce429226f0f5454cb7948ec2b70f6b5b6de383898227b38e51da"
+    },
+    {
+      "name": "x264",
+      "file": "x264.tar.gz",
+      "url": "https://code.videolan.org/videolan/x264/-/archive/b35605ace3ddf7c1a5d67a2eb553f034aef41d55/x264-b35605ace3ddf7c1a5d67a2eb553f034aef41d55.tar.gz",
+      "ref": "b35605ace3ddf7c1a5d67a2eb553f034aef41d55",
+      "sha256": "cd71a7515b0e9a012e1ac9b1f8415bebcaf6fc97d4db32286642ac4c0fbe24f9"
+    },
+    {
+      "name": "gcc",
+      "file": "gcc.tar.xz",
+      "url": "https://ftp.gnu.org/gnu/gcc/gcc-14.2.0/gcc-14.2.0.tar.xz",
+      "ref": "14.2.0",
+      "sha256": "a7b39bc69cbf9e25826c5a60ab26477001f7c08d85cec04bc0e29cabed6f3cc9"
+    },
+    {
+      "name": "musl",
+      "file": "musl.tar.gz",
+      "url": "https://musl.libc.org/releases/musl-1.2.5.tar.gz",
+      "ref": "1.2.5",
+      "sha256": "a9a118bbe84d8764da0ea0d28b3ab3fae8477fc7e4085d90102b8596fc7c75e4"
+    },
+    {
+      "name": "aports-gcc",
+      "file": "aports-gcc-verified.tar.gz",
+      "url": "https://codeload.github.com/alpinelinux/aports/tar.gz/fbf60319be3bbaf6dd32ef55cc6fb7189e05c266",
+      "ref": "fbf60319be3bbaf6dd32ef55cc6fb7189e05c266",
+      "sha256": "f18eb64afcfbc1c7c0bf179951541141e6dd557df0f130df27ac933e0b868096"
+    },
+    {
+      "name": "aports-musl",
+      "file": "aports-musl-verified.tar.gz",
+      "url": "https://codeload.github.com/alpinelinux/aports/tar.gz/1546f29a1fd233db15464ce000b6247ed71b31e7",
+      "ref": "1546f29a1fd233db15464ce000b6247ed71b31e7",
+      "sha256": "cc95442af5346193fd2ce1b2d120ac68a773e4bd6d58aeb0ab5b0545eafb5c65"
+    }
+  ]
+}
