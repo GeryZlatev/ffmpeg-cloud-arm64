@@ -22,7 +22,7 @@
   "--disable-encoders",
   "--enable-encoder=libx264,aac,rawvideo,wrapped_avframe",
   "--disable-decoders",
-  "--enable-decoder=h264,hevc,aac,pcm_s16le,pcm_s16be,rawvideo",
+  "--enable-decoder=h264,hevc,aac,pcm_s16le,pcm_s16be,rawvideo,wrapped_avframe",
   "--disable-muxers",
   "--enable-muxer=mov,mp4,null,rawvideo",
   "--disable-demuxers",

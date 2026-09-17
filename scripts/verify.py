@@ -49,7 +49,7 @@ conf = run([FF, "-buildconf"])
 (AUDIT / "buildconf.txt").write_text(conf)
 for flag in ("--enable-gpl", "--enable-libx264", "--enable-libzimg"):
     require(flag in conf.split(), flag)
-for kind, required in {"filters": ["zscale", "tonemap", "colorspace", "scale", "format", "fps", "transpose", "setsar", "pad", "crop", "aresample"], "encoders": ["libx264", "aac"], "decoders": ["h264", "hevc", "aac"], "demuxers": ["mov"], "muxers": ["mov", "mp4"]}.items():
+for kind, required in {"filters": ["zscale", "tonemap", "colorspace", "scale", "format", "fps", "transpose", "setsar", "pad", "crop", "aresample"], "encoders": ["libx264", "aac"], "decoders": ["h264", "hevc", "aac", "wrapped_avframe"], "demuxers": ["mov"], "muxers": ["mov", "mp4"]}.items():
     listing = run([FF, "-" + kind])
     (AUDIT / (kind + ".txt")).write_text(listing)
     names = {name for line in listing.splitlines() if len(line.split()) >= 2 for name in line.split()[1].split(",")}
