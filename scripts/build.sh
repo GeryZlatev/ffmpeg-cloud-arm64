@@ -48,7 +48,8 @@ Path('/out/audit/ffmpeg-configure.txt').write_text(shlex.join(['./configure']+fl
 subprocess.run(['./configure']+flags,check=True)
 PY
 # Keep linker maps to audit exactly which static archives supplied code.
-printf '%s\n' 'LDFLAGS += -Wl,-Map,$@.map' >> ffbuild/config.mak
+printf '%s\n' 'LDFLAGS-ffmpeg += -Wl,-Map,ffmpeg_g.map' \
+    'LDFLAGS-ffprobe += -Wl,-Map,ffprobe_g.map' >> ffbuild/config.mak
 make -j2
 cp ffmpeg ffprobe /out/package/bin/
 cp ffbuild/config.log ffbuild/config.mak /out/audit/
