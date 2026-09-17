@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Fail closed on ELF, capability, metadata, encode/decode and HDR smoke checks."""
+from fractions import Fraction
 import hashlib
 import json
 from pathlib import Path
@@ -26,14 +27,29 @@ def ff(*args):
     return run([FF, "-hide_banner", "-nostdin", "-y", "-v", "error", *args])
 
 
-def probe(path):
-    return json.loads(run([FP, "-v", "error", "-show_streams", "-show_format", "-of", "json", path]))
+def probe(path, timing=False):
+    options = ["-select_streams", "v:0", "-count_frames", "-show_frames"] if timing else []
+    return json.loads(run([FP, "-v", "error", *options, "-show_streams", "-show_format", "-of", "json", path]))
 
 
 def require(condition, label):
     if not condition:
         raise AssertionError(label)
     results[label] = "PASS"
+
+
+def require_timing(metadata, label):
+    stream = metadata["streams"][0]
+    frames = metadata["frames"]
+    require(int(stream["nb_read_frames"]) == 24 and len(frames) == 24,
+            label + " 24 decoded frames")
+    tick = Fraction(stream["time_base"])
+    # Integer container timestamps may round by at most one container tick.
+    require(all(abs(int(frame["pts"]) * tick - Fraction(i, 24)) <= tick
+                for i, frame in enumerate(frames)), label + " 24 fps presentation cadence")
+    require(Fraction(stream["r_frame_rate"]) == 24, label + " 24 fps")
+    require(abs(int(stream["duration_ts"]) * tick - 1) <= tick,
+            label + " one-second duration")
 
 
 for name in ("ffmpeg", "ffprobe"):
@@ -67,12 +83,13 @@ ff("-f", "lavfi", "-i", "testsrc2=size=128x72:rate=24:duration=1", "-pix_fmt", "
 for name, primaries, transfer, matrix in [("main10-sdr", "bt709", "bt709", "bt709"), ("main10-hlg", "bt2020", "arib-std-b67", "bt2020nc"), ("main10-pq", "bt2020", "smpte2084", "bt2020nc")]:
     hevc = FIX / (name + ".hevc")
     # This is an independent, pinned fixture-only encoder, never linked into FFmpeg.
-    log = run(["x265", "--input", raw, "--input-res", "128x72", "--fps", "24", "--frames", "24", "--input-depth", "10", "--output-depth", "10", "--profile", "main10", "--preset", "ultrafast", "--pools", "none", "--frame-threads", "1", "--colorprim", primaries, "--transfer", transfer, "--colormatrix", matrix, "--range", "limited", "--output", hevc])
+    log = run(["x265", "--input", raw, "--input-res", "128x72", "--fps", "24", "--frames", "24", "--bframes", "0", "--input-depth", "10", "--output-depth", "10", "--profile", "main10", "--preset", "ultrafast", "--pools", "none", "--frame-threads", "1", "--colorprim", primaries, "--transfer", transfer, "--colormatrix", matrix, "--range", "limited", "--output", hevc])
     (AUDIT / (name + "-x265.txt")).write_text(log)
     mp4 = FIX / (name + ".mp4")
     ff("-r", "24", "-i", hevc, "-c:v", "copy", "-tag:v", "hvc1", mp4)
-    metadata = probe(mp4)
+    metadata = probe(mp4, timing=True)
     (AUDIT / (name + "-probe.json")).write_text(json.dumps(metadata, indent=2) + "\n")
+    require_timing(metadata, name + " input")
     stream = metadata["streams"][0]
     for key, value in {"codec_name": "hevc", "profile": "Main 10", "pix_fmt": "yuv420p10le", "color_primaries": primaries, "color_transfer": transfer, "color_space": matrix, "color_range": "tv"}.items():
         require(stream.get(key) == value, name + ":" + key)
@@ -85,9 +102,11 @@ for name, primaries, transfer, matrix in [("main10-sdr", "bt709", "bt709", "bt70
     output = FIX / (name + "-output.mp4")
     ff("-i", mp4, "-vf", vf, "-c:v", "libx264", "-threads", "1", output)
     ff("-i", output, "-f", "null", "-")
-    out = probe(output)["streams"][0]
+    output_metadata = probe(output, timing=True)
+    (AUDIT / (name + "-output-probe.json")).write_text(json.dumps(output_metadata, indent=2) + "\n")
+    out = output_metadata["streams"][0]
     require(out["codec_name"] == "h264" and out["pix_fmt"] == "yuv420p", name + " filter and H264 encode")
-    require(int(out["nb_frames"]) == 24, name + " 24 output frames")
+    require_timing(output_metadata, name + " output")
 (AUDIT / "capability-results.json").write_text(json.dumps(results, indent=2) + "\n")
 (AUDIT / "fixture-hashes.json").write_text(json.dumps({p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(FIX.iterdir())}, indent=2) + "\n")
 print(json.dumps(results, indent=2))
