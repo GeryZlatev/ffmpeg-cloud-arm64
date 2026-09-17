@@ -1,6 +1,6 @@
 # Source and toolchain audit
 
-`build/sources.lock.json` is the source lock. `build/apk-lock.json` pins all 75
+`build/sources.lock.json` is the source lock. `build/apk-lock.json` pins all 76
 selected build/fixture packages, including transitive dependencies, by exact
 version, official Alpine URL and SHA-256. The immutable Alpine 3.22.1 ARM64 image
 is a bootstrap environment; the installed musl is the locked 1.2.5-r12 package.

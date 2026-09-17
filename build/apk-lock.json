@@ -287,6 +287,23 @@
     ]
   },
   {
+    "name": "gpg-agent",
+    "version": "2.4.9-r0",
+    "url": "https://dl-cdn.alpinelinux.org/alpine/v3.22/main/aarch64/gpg-agent-2.4.9-r0.apk",
+    "sha256": "b746eb9b4aa83507f6b3e6e0bda64a1c53b8a8d69d31814d0c95b4620a3a48cc",
+    "license": "GPL-3.0-or-later",
+    "origin": "gnupg",
+    "aports_commit": "12c23cfd213ebe15399e7b87263f3a9590b34028",
+    "dependencies": [
+      "gnupg-gpgconf=2.4.9-r0",
+      "so:libassuan.so.0",
+      "so:libc.musl-aarch64.so.1",
+      "so:libgcrypt.so.20",
+      "so:libgpg-error.so.0",
+      "so:libnpth.so.0"
+    ]
+  },
+  {
     "name": "isl26",
     "version": "0.26-r1",
     "url": "https://dl-cdn.alpinelinux.org/alpine/v3.22/main/aarch64/isl26-0.26-r1.apk",
