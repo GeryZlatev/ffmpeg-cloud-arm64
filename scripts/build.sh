@@ -10,7 +10,7 @@ shellcheck scripts/*.sh
 python3 -m compileall -q scripts
 python3 scripts/lint.py
 export HOME=/work/home
-mkdir -m 700 -p "$HOME" /work/gnupg
+mkdir -m 700 "$HOME" /work/gnupg
 export GNUPGHOME=/work/gnupg
 gpg --batch --import build/ffmpeg-release-key.asc
 fingerprint=$(gpg --batch --with-colons --fingerprint | awk -F: '$1=="fpr" {print $10; exit}')
