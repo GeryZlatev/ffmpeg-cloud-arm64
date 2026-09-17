@@ -11,10 +11,17 @@ No separate project license has been added in Gate 1.
 | zimg 3.0.6 | https://github.com/sekrit-twc/zimg; copyright its contributors, author notices in source | WTFPL version 2; `zimg-WTFPL-2.txt` |
 | musl 1.2.5 (Alpine 1.2.5-r12), including libc, libm, pthread and startup code | https://musl.libc.org; Rich Felker and contributors, including incorporated code attribution | MIT and incorporated permissive notices; complete `musl-COPYRIGHT.txt` |
 | GCC 14.2.0 runtime, Alpine 14.2.0-r6: libgcc/libgcc_eh and libstdc++ | https://gcc.gnu.org; Free Software Foundation and contributors | GPL-3.0 with GCC Runtime Library Exception 3.1; `GCC-GPL-3.0.txt`, `GCC-RUNTIME-EXCEPTION.txt`; individual source headers retained in companion source |
+| libatomic.a, supplied by locked gcc 14.2.0-r6 | https://gcc.gnu.org; Free Software Foundation and contributors | GPL-3.0-or-later with GCC Runtime Library Exception 3.1; existing `GCC-GPL-3.0.txt` and `GCC-RUNTIME-EXCEPTION.txt` |
+| libssp_nonshared.a, supplied by locked musl-dev 1.2.5-r12 | Alpine musl packaging compatibility wrapper (`__stack_chk_fail_local.c`), retained in the pinned aports-musl source snapshot | MIT per pinned musl-dev package metadata; wrapper has no separate license header; this is not GCC libssp |
 
-`LICENSES/` contains the named files. Actual archive participation for each binary
-is recorded in BUILD-MANIFEST.json and the audit linker maps. Empty musl
-compatibility archives do not represent extra libraries.
+`LICENSES/` contains the named files. BUILD-MANIFEST.json lists linker archive
+inputs, including `LOAD` entries; the audit maps distinguish inputs from archives
+that supplied extracted object members and symbols. In inspected Gate 1 run #7,
+libatomic.a and libssp_nonshared.a are inputs to both executables but contribute
+no extracted members or symbols. Empty musl compatibility archives likewise do
+not represent additional code. The two expected inputs add no dependency pins
+or change the documented GPL conclusion; their source/recipe snapshots and the
+applicable GCC exception and musl notices are already retained.
 
 libx264 enables GPL code in FFmpeg. This is not an LGPL-only binary. There is no
 `--enable-nonfree` and no commercial x264 license assertion. GCC runtime exception

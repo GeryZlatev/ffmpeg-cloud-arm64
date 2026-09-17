@@ -70,3 +70,19 @@ external autodetection, networking, hardware acceleration and unrelated encoders
 are disabled. The decoder/container allowlist targets the requested phone media
 and is not a promise of compatibility with every phone recording mode (for
 example AV1, ProRes, Dolby Vision or unrelated audio codecs).
+
+The explicit archive allowlist also includes `/usr/lib/libatomic.a`, supplied by
+locked `gcc=14.2.0-r6`, and `/usr/lib/libssp_nonshared.a`, supplied by locked
+`musl-dev=1.2.5-r12`. Ownership was verified from the hash-checked APKs.
+FFmpeg's atomic configure probe tries `-latomic` first and retains it on success;
+Alpine's GCC driver patch adds `-lssp_nonshared` unconditionally for musl.
+The latter archive provides a compatibility wrapper for `__stack_chk_fail_local`.
+
+In Gate 1 run #7, both executables' maps list these archives as `LOAD` inputs,
+but neither archive contributes an extracted object member or symbol. Stack
+protector symbols are supplied by musl's `libc.a`; ARM64 atomic helpers are
+supplied by `libgcc.a`. A listed linker input is not proof that its code entered
+the executable: the manifest's archive list includes `LOAD` entries, while the
+maps identify extracted members and their symbol references. This observation
+is specific to the inspected build. Every other unexpected archive remains a
+hard failure, and static ELF validation remains unchanged.

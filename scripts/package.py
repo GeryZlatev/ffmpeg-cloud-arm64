@@ -32,7 +32,7 @@ sources = json.loads((RECIPE / "build/sources.lock.json").read_text())
 packages = json.loads((RECIPE / "build/apk-lock.json").read_text())
 flags = json.loads((RECIPE / "build/ffmpeg-configure.json").read_text())
 # Fail closed on unexpected statically linked archives, including accidental x265.
-allowed = {"libavcodec.a", "libavformat.a", "libavfilter.a", "libavdevice.a", "libavutil.a", "libswscale.a", "libswresample.a", "libx264.a", "libzimg.a", "libstdc++.a", "libgcc.a", "libgcc_eh.a", "libc.a", "libm.a", "libpthread.a"}
+allowed = {"libavcodec.a", "libavformat.a", "libavfilter.a", "libavdevice.a", "libavutil.a", "libswscale.a", "libswresample.a", "libx264.a", "libzimg.a", "libstdc++.a", "libgcc.a", "libgcc_eh.a", "libc.a", "libm.a", "libpthread.a", "libatomic.a", "libssp_nonshared.a"}
 linked = {}
 for name in ("ffmpeg", "ffprobe"):
     content = (OUT / "audit" / (name + "_g.map")).read_text()
