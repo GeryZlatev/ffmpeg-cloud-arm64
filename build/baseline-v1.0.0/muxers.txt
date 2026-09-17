@@ -1,0 +1,19 @@
+Formats:
+ D.. = Demuxing supported
+ .E. = Muxing supported
+ ..d = Is a device
+ ---
+  E  mov             QuickTime / MOV
+  E  mp4             MP4 (MPEG-4 Part 14)
+  E  null            raw null video
+  E  rawvideo        raw video
+ffmpeg version 7.1.5 Copyright (c) 2000-2026 the FFmpeg developers
+  built with gcc 14.2.0 (Alpine 14.2.0)
+  configuration: --prefix=/opt/ffmpeg --arch=aarch64 --cpu=armv8-a --target-os=linux --cc=gcc --cxx=g++ --enable-gpl --enable-libx264 --enable-libzimg --enable-static --disable-shared --disable-autodetect --disable-debug --disable-doc --disable-ffplay --disable-network --disable-hwaccels --disable-vulkan --disable-vaapi --disable-vdpau --disable-encoders --enable-encoder='libx264,aac,rawvideo,wrapped_avframe' --disable-decoders --enable-decoder='h264,hevc,aac,pcm_s16le,pcm_s16be,rawvideo,wrapped_avframe' --disable-muxers --enable-muxer='mov,mp4,null,rawvideo' --disable-demuxers --enable-demuxer='mov,h264,hevc,aac,rawvideo' --disable-protocols --enable-protocol='file,pipe' --disable-indevs --enable-indev=lavfi --disable-outdevs --disable-postproc --pkg-config-flags=--static --extra-cflags='-O2 -march=armv8-a -ffile-prefix-map=/work=/usr/src/build -fdebug-prefix-map=/work=/usr/src/build' --extra-cxxflags='-O2 -march=armv8-a -ffile-prefix-map=/work=/usr/src/build -fdebug-prefix-map=/work=/usr/src/build' --extra-ldflags='-static -static-libgcc -static-libstdc++ -Wl,--build-id=none' --extra-libs='-lstdc++ -lm -lpthread'
+  libavutil      59. 39.100 / 59. 39.100
+  libavcodec     61. 19.101 / 61. 19.101
+  libavformat    61.  7.103 / 61.  7.103
+  libavdevice    61.  3.100 / 61.  3.100
+  libavfilter    10.  5.100 / 10.  5.100
+  libswscale      8.  3.100 /  8.  3.100
+  libswresample   5.  3.100 /  5.  3.100

@@ -9,6 +9,7 @@ No separate project license has been added in Gate 1.
 | FFmpeg 7.1.5 and its libavcodec, libavformat, libavfilter, libavdevice, libavutil, libswscale, libswresample | https://ffmpeg.org; copyright the FFmpeg developers, individual notices retained in source | GPL-2.0-or-later for this GPL-enabled configuration; `FFmpeg-GPL-2.0.txt`, `FFmpeg-LICENSE.md` |
 | x264, commit recorded in SOURCE-MANIFEST.json | https://code.videolan.org/videolan/x264; copyright 2003–2025 x264 project and contributing authors | GPL-2.0-or-later; `x264-GPL-2.0.txt` |
 | zimg 3.0.6 | https://github.com/sekrit-twc/zimg; copyright its contributors, author notices in source | WTFPL version 2; `zimg-WTFPL-2.txt` |
+| dav1d 1.5.4, commit `54706fc6bc0cdecab7e9593974a4039cc038fca7` | https://code.videolan.org/videolan/dav1d; copyright 2018–2025 VideoLAN and dav1d authors; individual notices retained in source | BSD-2-Clause; `dav1d-BSD-2-Clause.txt`; upstream AV1 patent-license material in `dav1d-AV1-PATENTS.txt` |
 | musl 1.2.5 (Alpine 1.2.5-r12), including libc, libm, pthread and startup code | https://musl.libc.org; Rich Felker and contributors, including incorporated code attribution | MIT and incorporated permissive notices; complete `musl-COPYRIGHT.txt` |
 | GCC 14.2.0 runtime, Alpine 14.2.0-r6: libgcc/libgcc_eh and libstdc++ | https://gcc.gnu.org; Free Software Foundation and contributors | GPL-3.0 with GCC Runtime Library Exception 3.1; `GCC-GPL-3.0.txt`, `GCC-RUNTIME-EXCEPTION.txt`; individual source headers retained in companion source |
 | libatomic.a, supplied by locked gcc 14.2.0-r6 | https://gcc.gnu.org; Free Software Foundation and contributors | GPL-3.0-or-later with GCC Runtime Library Exception 3.1; existing `GCC-GPL-3.0.txt` and `GCC-RUNTIME-EXCEPTION.txt` |
@@ -39,3 +40,10 @@ identify their source and licensing information.
 Read `LICENSES/CORRESPONDING-SOURCE.md` for source availability and reconstruction
 instructions. Preserve the runtime notices, manifests and companion source when
 sharing these audit outputs.
+
+For the v1.0.1 candidate, dav1d is one additional statically linked library; its
+source and build recipe accompany the runtime. It does not remove the existing
+GPL-enabled FFmpeg/x264 obligations. The approved libdl.a input is an empty
+eight-byte compatibility archive from already-pinned musl-dev-1.2.5-r12 and
+contributes no object code. Each build checks this fact and rejects any other
+unexpected archive. See V1.0.1-COMPATIBILITY.md for hashes and review scope.

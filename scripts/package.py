@@ -31,15 +31,12 @@ def write(path, value):
 sources = json.loads((RECIPE / "build/sources.lock.json").read_text())
 packages = json.loads((RECIPE / "build/apk-lock.json").read_text())
 flags = json.loads((RECIPE / "build/ffmpeg-configure.json").read_text())
-# Fail closed on unexpected statically linked archives, including accidental x265.
-allowed = {"libavcodec.a", "libavformat.a", "libavfilter.a", "libavdevice.a", "libavutil.a", "libswscale.a", "libswresample.a", "libx264.a", "libzimg.a", "libstdc++.a", "libgcc.a", "libgcc_eh.a", "libc.a", "libm.a", "libpthread.a", "libatomic.a", "libssp_nonshared.a"}
+# Repeat the fail-closed inspection at packaging, using the same audited policy.
+from static_link import inspect
 linked = {}
 for name in ("ffmpeg", "ffprobe"):
     content = (OUT / "audit" / (name + "_g.map")).read_text()
-    archives = sorted(set(re.findall(r"[\w./+-]+\.a\b", content)))
-    if not archives or {Path(p).name for p in archives} - allowed:
-        raise RuntimeError("Unexpected or missing link map archives: " + repr(archives))
-    linked[name] = archives
+    linked[name] = inspect(content)
 shutil.copytree(RECIPE / "licenses", PKG / "LICENSES")
 shutil.copy(RECIPE / "docs/THIRD-PARTY-NOTICES.md", PKG / "THIRD-PARTY-NOTICES.md")
 shutil.copy(RECIPE / "docs/CORRESPONDING-SOURCE.md", PKG / "LICENSES/CORRESPONDING-SOURCE.md")
@@ -50,9 +47,12 @@ manifest = {
     "platform": "linux/arm64", "libc": "musl 1.2.5-r12", "linkage": "static",
     "container": sources["container"], "source_date_epoch": EPOCH,
     "ffmpeg": "7.1.5", "zimg": "3.0.6", "x264_commit": sources["x264_commit"],
+    "runtime_candidate": "1.0.1", "dav1d": sources['dav1d_version'],
+    "dav1d_commit": sources['dav1d_commit'],
+    "dav1d_configure_argv": ['meson', 'setup', 'build'] + json.loads((RECIPE / 'build/dav1d-configure.json').read_text()),
     "compiler": command("gcc", "--version"), "cxx_compiler": command("g++", "--version"),
     "linker": command("ld", "--version"),
-    "build_tools": {name: command(name, "--version") for name in ["make", "autoconf", "automake", "libtool", "pkgconf", "python3", "tar"]},
+    "build_tools": {name: command(name, "--version") for name in ["make", "autoconf", "automake", "libtool", "pkgconf", "python3", "tar", "meson", "ninja"]},
     "ffmpeg_configure_argv": ["./configure"] + flags,
     "ffmpeg_configure_command": shlex.join(["./configure"] + flags),
     "x264_configure_argv": ["./configure", "--prefix=/work/prefix", "--host=aarch64-linux-musl", "--enable-static", "--disable-cli", "--disable-opencl", "--bit-depth=8", "--chroma-format=420"],
@@ -60,10 +60,19 @@ manifest = {
     "environment": {k: os.environ[k] for k in ["LANG", "LC_ALL", "TZ", "SOURCE_DATE_EPOCH", "CFLAGS", "CXXFLAGS", "LDFLAGS", "PKG_CONFIG_LIBDIR", "ZERO_AR_DATE"]},
     "binary_files": {"bin/" + name: {"size_bytes": (PKG / "bin" / name).stat().st_size, "sha256": sha(PKG / "bin" / name)} for name in ["ffmpeg", "ffprobe"]},
     "linked_static_archives": linked,
+    "static_link_audit": json.loads((OUT / 'audit/static-link.json').read_text()),
+    "compatibility_results": json.loads((OUT / 'audit/compatibility-results.json').read_text()),
+    "fixture_provenance": json.loads((RECIPE / 'fixtures/manifest.json').read_text()),
     "capability_results": json.loads((OUT / "audit/capability-results.json").read_text()),
     "reproducibility": "See sibling reproducibility.json comparing two independent builds; a single build is not evidence.",
 }
 write(PKG / "BUILD-MANIFEST.json", manifest)
+baseline = json.loads((RECIPE / 'build/baseline-v1.0.0/provenance.json').read_text())
+write(OUT / 'audit/size-comparison.json', {
+    'baseline': baseline,
+    'candidate': manifest['binary_files'],
+    'delta_bytes': {name: value['size_bytes'] - baseline['binary_files'][name]['size_bytes']
+                    for name, value in manifest['binary_files'].items()}})
 (PKG / "SHA256SUMS").write_text("".join(sha(p) + "  " + str(p.relative_to(PKG)) + "\n" for p in sorted(PKG.rglob("*")) if p.is_file() and p.name != "SHA256SUMS"))
 
 

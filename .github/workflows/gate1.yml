@@ -20,6 +20,7 @@ jobs:
         run: |
           bash -n scripts/*.sh
           python3 scripts/lint.py
+          python3 scripts/test_contracts.py
       - name: Two clean native ARM64 builds and capability tests
         run: bash scripts/run.sh
       - name: Upload audit evidence even on failure

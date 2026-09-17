@@ -5,6 +5,7 @@ COPY scripts /recipe/scripts
 COPY build /recipe/build
 COPY licenses /recipe/licenses
 COPY docs /recipe/docs
+COPY fixtures /recipe/fixtures
 COPY README.md /recipe/README.md
 ENV LANG=C LC_ALL=C TZ=UTC SOURCE_DATE_EPOCH=1781913600
 WORKDIR /recipe

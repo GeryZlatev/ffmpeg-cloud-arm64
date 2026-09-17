@@ -1,6 +1,6 @@
 # Source and toolchain audit
 
-`build/sources.lock.json` is the source lock. `build/apk-lock.json` pins all 77
+`build/sources.lock.json` is the source lock. `build/apk-lock.json` pins all 79
 selected build/fixture packages, including transitive dependencies, by exact
 version, official Alpine URL and SHA-256. The immutable Alpine 3.22.1 ARM64 image
 is a bootstrap environment; the installed musl is the locked 1.2.5-r12 package.
@@ -64,12 +64,12 @@ The check establishes repeatability on the tested runner, not cross-host proof.
 
 Link maps are captured before stripping and reject unexpected archive names.
 Static ELF checks reject an interpreter or DT_NEEDED entries. FFmpeg's internal
-codec libraries plus x264, zimg, musl and GCC runtime are the allowed linked set.
+codec libraries plus x264, zimg, dav1d, musl and GCC runtime are the allowed linked set.
 All filters and parsers remain available to preserve normalization primitives;
 external autodetection, networking, hardware acceleration and unrelated encoders
 are disabled. The decoder/container allowlist targets the requested phone media
 and is not a promise of compatibility with every phone recording mode (for
-example AV1, ProRes, Dolby Vision or unrelated audio codecs).
+example ProRes, Dolby Vision or unrelated audio codecs).
 
 The explicit archive allowlist also includes `/usr/lib/libatomic.a`, supplied by
 locked `gcc=14.2.0-r6`, and `/usr/lib/libssp_nonshared.a`, supplied by locked
@@ -86,3 +86,7 @@ the executable: the manifest's archive list includes `LOAD` entries, while the
 maps identify extracted members and their symbol references. This observation
 is specific to the inspected build. Every other unexpected archive remains a
 hard failure, and static ELF validation remains unchanged.
+
+The v1.0.1 additive audit and exact dav1d/libdl provenance are documented in
+[V1.0.1-COMPATIBILITY.md](V1.0.1-COMPATIBILITY.md). The original v1.0.0
+recipe/tests are retained as a regression baseline; no v1.0.0 asset is changed.

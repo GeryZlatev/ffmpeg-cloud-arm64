@@ -1,0 +1,18 @@
+{
+  "tag": "v1.0.0",
+  "tag_commit": "6b4bb32dbbf7eaba6b7545d92a33cbae6e492e4c",
+  "workflow_run": 35203128428,
+  "release_url": "https://github.com/GeryZlatev/ffmpeg-cloud-arm64/releases/tag/v1.0.0",
+  "audit_sha256": "116bcf2da1ad862e8ee5e55757f85c06d4b20f6b46ebab1ed847df248970a441",
+  "build_manifest_sha256": "6d50c9f8bad9068d7b7c20c7f58162d8c3744b370bf4d5c8b8328d115e7a3eb2",
+  "binary_files": {
+    "bin/ffmpeg": {
+      "sha256": "7bc16adb5f85e41fd80155dcfa7ec98729a719675dd7029a4db6f6f4c9cc9dec",
+      "size_bytes": 10425456
+    },
+    "bin/ffprobe": {
+      "sha256": "41e8cc21e87b887f70ebb356785eb0d326047202f4170e85b7c5c0c19af0b54b",
+      "size_bytes": 10367376
+    }
+  }
+}
