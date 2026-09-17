@@ -1,11 +1,18 @@
 # Source and toolchain audit
 
-`build/sources.lock.json` is the source lock. `build/apk-lock.json` pins all 76
+`build/sources.lock.json` is the source lock. `build/apk-lock.json` pins all 77
 selected build/fixture packages, including transitive dependencies, by exact
 version, official Alpine URL and SHA-256. The immutable Alpine 3.22.1 ARM64 image
 is a bootstrap environment; the installed musl is the locked 1.2.5-r12 package.
 No package index or floating resolution runs in CI. Deleted upstream inputs cause
 a hard failure; never silently substitute a newer package or hash.
+
+`linux-headers` 6.14.2-r0 supplies `/usr/include/asm/hwcap.h` for zimg's ARM
+build. It is a build-time Linux UAPI header dependency, not a linked library or
+installed kernel. Its APK metadata declares GPL-2.0-only; the inspected
+`asm/hwcap.h` declares `GPL-2.0 WITH Linux-syscall-note`. Its exact Alpine source
+recipe commit and APK hash are recorded in the package lock and generated source
+manifest. ARM SIMD/NEON and CPU detection remain enabled.
 
 FFmpeg's downloaded release archive is checked by SHA-256 and its detached PGP
 signature before extraction. The committed upstream public key is hash-checked,

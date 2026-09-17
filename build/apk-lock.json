@@ -631,6 +631,16 @@
     ]
   },
   {
+    "name": "linux-headers",
+    "version": "6.14.2-r0",
+    "url": "https://dl-cdn.alpinelinux.org/alpine/v3.22/main/aarch64/linux-headers-6.14.2-r0.apk",
+    "sha256": "08bc7264055d4ceca249e21f47875ccd7ae2dc7eaf49e235a83b1059e06d9089",
+    "license": "GPL-2.0-only",
+    "origin": "linux-headers",
+    "aports_commit": "7aeec83f1c6bf21c453a05debb215f927eaf5dd2",
+    "dependencies": []
+  },
+  {
     "name": "m4",
     "version": "1.4.19-r4",
     "url": "https://dl-cdn.alpinelinux.org/alpine/v3.22/main/aarch64/m4-1.4.19-r4.apk",
