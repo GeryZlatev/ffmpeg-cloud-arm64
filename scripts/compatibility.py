@@ -103,7 +103,7 @@ for name, codec in [('mp3.mp3', 'mp3'), ('alac.m4a', 'alac')]:
             name + ' 48000 decoded samples')
     output = OUT / (name + '-aac.mp4')
     ff('-c:a', codec, '-i', FIX / name, '-map', '0:a:0', '-c:a', 'aac', output)
-    ff('-i', output, '-f', 'null', '-')
+    ff('-i', output, '-c:a', 'aac', '-f', 'null', '-')
     require(probe(output)['streams'][0]['codec_name'] == 'aac', name + ' decode and AAC/MP4 roundtrip')
     (AUDIT / (name + '-probe.json')).write_text(json.dumps(info, indent=2) + '\n')
 
