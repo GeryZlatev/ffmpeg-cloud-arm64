@@ -665,19 +665,6 @@
     ]
   },
   {
-    "name": "meson",
-    "version": "1.8.1-r0",
-    "url": "https://dl-cdn.alpinelinux.org/alpine/v3.22/main/aarch64/meson-1.8.1-r0.apk",
-    "sha256": "1a64d6659c1107eefb7ded9be5a51845d5cd0ceb30a8779ed75e88e567aab9f2",
-    "license": "Apache-2.0",
-    "origin": "meson",
-    "aports_commit": "515fbe87842544039e7ca3761f19aef703a12b72",
-    "dependencies": [
-      "samurai",
-      "python3~3.12"
-    ]
-  },
-  {
     "name": "mpc1",
     "version": "1.3.1-r1",
     "url": "https://dl-cdn.alpinelinux.org/alpine/v3.22/main/aarch64/mpc1-1.3.1-r1.apk",
@@ -906,18 +893,6 @@
     "dependencies": [
       "so:libc.musl-aarch64.so.1",
       "so:libncursesw.so.6"
-    ]
-  },
-  {
-    "name": "samurai",
-    "version": "1.2-r7",
-    "url": "https://dl-cdn.alpinelinux.org/alpine/v3.22/main/aarch64/samurai-1.2-r7.apk",
-    "sha256": "1d54928a0266e0b9173073e254c769a23a0c437a1397881738e6507898bc3fe6",
-    "license": "Apache-2.0",
-    "origin": "samurai",
-    "aports_commit": "be0833caee3020f089f02c5d7223e971a9a11ffb",
-    "dependencies": [
-      "so:libc.musl-aarch64.so.1"
     ]
   },
   {

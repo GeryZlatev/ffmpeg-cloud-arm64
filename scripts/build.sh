@@ -17,7 +17,7 @@ fingerprint=$(gpg --batch --with-colons --fingerprint | awk -F: '$1=="fpr" {prin
 test "$fingerprint" = FCF986EA15E6E293A5644F10B4322F04D67658D8
 gpg --batch --status-fd 1 --verify /inputs/ffmpeg.tar.xz.asc /inputs/ffmpeg.tar.xz > /out/audit/signature.txt
 grep -q 'VALIDSIG FCF986EA15E6E293A5644F10B4322F04D67658D8 ' /out/audit/signature.txt
-for source in ffmpeg zimg x264; do
+for source in ffmpeg zimg x264 dav1d; do
     mkdir "/work/src/$source"
     if [ "$source" = ffmpeg ]; then archive=/inputs/ffmpeg.tar.xz; else archive="/inputs/$source.tar.gz"; fi
     tar -xf "$archive" --strip-components=1 -C "/work/src/$source"
@@ -27,6 +27,23 @@ export CXXFLAGS="$CFLAGS"
 export LDFLAGS='-static -static-libgcc -static-libstdc++ -Wl,--build-id=none'
 export PKG_CONFIG_LIBDIR=/work/prefix/lib/pkgconfig
 export ZERO_AR_DATE=1
+cd /work/src/dav1d
+python3 - <<'PY'
+import json, subprocess, shlex
+from pathlib import Path
+flags = json.loads(Path('/recipe/build/dav1d-configure.json').read_text())
+argv = ['meson', 'setup', 'build'] + flags
+Path('/out/audit/dav1d-configure.txt').write_text(shlex.join(argv) + '\n')
+subprocess.run(argv, check=True)
+PY
+ninja -C build -j2
+ninja -C build install
+cp build/meson-logs/meson-log.txt /out/audit/dav1d-meson-log.txt
+cp build/meson-info/intro-buildoptions.json /out/audit/dav1d-buildoptions.json
+cp build/config.h /out/audit/dav1d-config.h
+cp /work/prefix/lib/pkgconfig/dav1d.pc /out/audit/dav1d.pc
+test -f /work/prefix/lib/libdav1d.a
+test ! -e /work/prefix/lib/libdav1d.so
 cd /work/src/x264
 ./configure --prefix=/work/prefix --host=aarch64-linux-musl --enable-static --disable-cli --disable-opencl --bit-depth=8 --chroma-format=420
 make -j2
@@ -54,5 +71,7 @@ make -j2
 cp ffmpeg ffprobe /out/package/bin/
 cp ffbuild/config.log ffbuild/config.mak /out/audit/
 cp ffmpeg_g.map ffprobe_g.map /out/audit/
+python3 /recipe/scripts/static_link.py /out/audit
 python3 /recipe/scripts/verify.py /out/package/bin /out/audit
+python3 /recipe/scripts/compatibility.py /out/package/bin /out/audit
 python3 /recipe/scripts/package.py

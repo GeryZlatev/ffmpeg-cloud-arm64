@@ -8,6 +8,12 @@ A successful CI run, including the two-build comparison, is required before
 calling the output reproducible. See the PR checks and downloaded evidence;
 source pinning alone does not establish byte-identical binaries.
 
+The v1.0.1 candidate adds CPU AV1 decoding through static **dav1d 1.5.4**,
+VP9/MP3/ALAC input decoding and MJPEG/image2 thumbnails. All v1.0.0 tests and
+capabilities are retained and checked against the immutable release baseline.
+See [compatibility and provenance](docs/V1.0.1-COMPATIBILITY.md) for exact additions,
+fixture provenance, licensing, and the approved empty musl libdl archive.
+
 The media stack is FFmpeg **7.1.5**, zimg **3.0.6**, and x264 commit
 **b35605ace3ddf7c1a5d67a2eb553f034aef41d55**. The executables are GPL-enabled
 because of x264. The pinned compiler is GCC **14.2.0-r6**, linker binutils
@@ -86,7 +92,7 @@ FFmpeg distribution; see [audit scope](docs/AUDIT.md) for limits and pin review.
 Exact FFmpeg configure command (also generated into the audit and manifest):
 
 ```sh
-./configure --prefix=/opt/ffmpeg --arch=aarch64 --cpu=armv8-a --target-os=linux --cc=gcc --cxx=g++ --enable-gpl --enable-libx264 --enable-libzimg --enable-static --disable-shared --disable-autodetect --disable-debug --disable-doc --disable-ffplay --disable-network --disable-hwaccels --disable-vulkan --disable-vaapi --disable-vdpau --disable-encoders --enable-encoder=libx264,aac,rawvideo,wrapped_avframe --disable-decoders --enable-decoder=h264,hevc,aac,pcm_s16le,pcm_s16be,rawvideo,wrapped_avframe --disable-muxers --enable-muxer=mov,mp4,null,rawvideo --disable-demuxers --enable-demuxer=mov,h264,hevc,aac,rawvideo --disable-protocols --enable-protocol=file,pipe --disable-indevs --enable-indev=lavfi --disable-outdevs --disable-postproc --pkg-config-flags=--static '--extra-cflags=-O2 -march=armv8-a -ffile-prefix-map=/work=/usr/src/build -fdebug-prefix-map=/work=/usr/src/build' '--extra-cxxflags=-O2 -march=armv8-a -ffile-prefix-map=/work=/usr/src/build -fdebug-prefix-map=/work=/usr/src/build' '--extra-ldflags=-static -static-libgcc -static-libstdc++ -Wl,--build-id=none' '--extra-libs=-lstdc++ -lm -lpthread'
+./configure --prefix=/opt/ffmpeg --arch=aarch64 --cpu=armv8-a --target-os=linux --cc=gcc --cxx=g++ --enable-gpl --enable-libx264 --enable-libzimg --enable-libdav1d --enable-static --disable-shared --disable-autodetect --disable-debug --disable-doc --disable-ffplay --disable-network --disable-hwaccels --disable-vulkan --disable-vaapi --disable-vdpau --disable-encoders --enable-encoder=libx264,aac,rawvideo,wrapped_avframe,mjpeg --disable-decoders --enable-decoder=h264,hevc,aac,pcm_s16le,pcm_s16be,rawvideo,wrapped_avframe,libdav1d,vp9,mp3,alac,mjpeg --disable-muxers --enable-muxer=mov,mp4,null,rawvideo,image2 --disable-demuxers --enable-demuxer=mov,h264,hevc,aac,rawvideo,matroska,mp3,image2 --disable-protocols --enable-protocol=file,pipe --disable-indevs --enable-indev=lavfi --disable-outdevs --disable-postproc --pkg-config-flags=--static '--extra-cflags=-O2 -march=armv8-a -ffile-prefix-map=/work=/usr/src/build -fdebug-prefix-map=/work=/usr/src/build' '--extra-cxxflags=-O2 -march=armv8-a -ffile-prefix-map=/work=/usr/src/build -fdebug-prefix-map=/work=/usr/src/build' '--extra-ldflags=-static -static-libgcc -static-libstdc++ -Wl,--build-id=none' '--extra-libs=-lstdc++ -lm -lpthread'
 ```
 
 Repository layout:

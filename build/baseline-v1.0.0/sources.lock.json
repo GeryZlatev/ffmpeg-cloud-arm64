@@ -59,15 +59,6 @@
       "url": "https://codeload.github.com/alpinelinux/aports/tar.gz/1546f29a1fd233db15464ce000b6247ed71b31e7",
       "ref": "1546f29a1fd233db15464ce000b6247ed71b31e7",
       "sha256": "cc95442af5346193fd2ce1b2d120ac68a773e4bd6d58aeb0ab5b0545eafb5c65"
-    },
-    {
-      "name": "dav1d",
-      "file": "dav1d.tar.gz",
-      "url": "https://code.videolan.org/videolan/dav1d/-/archive/54706fc6bc0cdecab7e9593974a4039cc038fca7/dav1d-54706fc6bc0cdecab7e9593974a4039cc038fca7.tar.gz",
-      "ref": "1.5.4 / 54706fc6bc0cdecab7e9593974a4039cc038fca7",
-      "sha256": "9edb11a2108b375cc58370354e705feebc93430bb780130363815c1e1ac0c250"
     }
-  ],
-  "dav1d_version": "1.5.4",
-  "dav1d_commit": "54706fc6bc0cdecab7e9593974a4039cc038fca7"
+  ]
 }

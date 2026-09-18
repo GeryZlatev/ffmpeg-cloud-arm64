@@ -1,0 +1,18 @@
+[
+  "--prefix=/work/prefix",
+  "--libdir=lib",
+  "--default-library=static",
+  "--buildtype=release",
+  "--wrap-mode=nodownload",
+  "-Db_lto=false",
+  "-Dbitdepths=8,16",
+  "-Denable_asm=true",
+  "-Denable_tools=false",
+  "-Denable_examples=false",
+  "-Denable_tests=false",
+  "-Denable_seek_stress=false",
+  "-Denable_docs=false",
+  "-Dtestdata_tests=false",
+  "-Dfuzzing_engine=none",
+  "-Dxxhash_muxer=disabled"
+]
